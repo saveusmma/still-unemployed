@@ -24,3 +24,4 @@ npm run dev
 ## Deploying
 This project is set up to deploy automatically on Vercel. Push to GitHub,
 connect the repo on vercel.com, and Vercel handles the rest.
+
