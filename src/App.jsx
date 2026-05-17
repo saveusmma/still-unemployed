@@ -4,12 +4,19 @@ import { useState, useEffect, useRef, useCallback } from "react";
 const ACHIEVEMENTS = [
   { days: 1, label: "Day One", emoji: "🛋️", message: "Day 1. The journey begins. Couch is warm. 🛋️" },
   { days: 3, label: "Three Day Hermit", emoji: "🌙", message: "3 days strong. You've officially forgotten what an alarm clock sounds like." },
+  { days: 5, label: "Workweek Skipper", emoji: "🎟️", message: "5 days. You've successfully ghosted an entire workweek." },
   { days: 7, label: "One Week Wonder", emoji: "✨", message: "One week. You are THRIVING. LinkedIn who?" },
+  { days: 10, label: "Double Digits", emoji: "🔟", message: "10 days. Officially a double-digit unemployment professional." },
   { days: 14, label: "Fortnight Folk Hero", emoji: "🎨", message: "Two weeks. Your sleep schedule is a work of abstract art." },
+  { days: 21, label: "Habit Formed", emoji: "🌀", message: "21 days. Science says habits form in three weeks. You did it." },
   { days: 30, label: "Cave Dweller", emoji: "🦇", message: "A WHOLE MONTH?! Wow. You're a real cave dweller. Keep it up. 🦇" },
+  { days: 45, label: "Couch Tenured", emoji: "📜", message: "45 days. The couch has filed for joint custody." },
   { days: 60, label: "Specimen", emoji: "🔬", message: "60 days. Scientists want to study you. You've transcended the 9-to-5." },
+  { days: 75, label: "Quarter Hermit", emoji: "🍃", message: "75 days. A whole season missed. Did seasons change? You wouldn't know." },
   { days: 100, label: "Legend", emoji: "🏆", message: "100 DAYS. You are a LEGEND. Build a monument. Name a holiday after yourself. 🏆" },
+  { days: 150, label: "Folk Tale", emoji: "📖", message: "150 days. Children whisper about you in HR departments." },
   { days: 180, label: "Higher Plane", emoji: "🌀", message: "Half a year. You've entered a new plane of existence. We are not worthy." },
+  { days: 250, label: "Mythological", emoji: "🗿", message: "250 days. The economy speaks your name only in hushed tones." },
   { days: 365, label: "Chosen One", emoji: "👑", message: "ONE YEAR. You are the chosen one. The economy fears you. 👑" },
 ];
 
@@ -99,6 +106,10 @@ function highestEarned(days) {
   let best = null;
   for (const a of ACHIEVEMENTS) if (days >= a.days) best = a;
   return best;
+}
+function nextMilestone(days) {
+  for (const a of ACHIEVEMENTS) if (days < a.days) return a;
+  return null; // no more milestones — they hit 365
 }
 
 // ─── Sound (Web Audio) ─────────────────────────────────────────────────────
@@ -558,6 +569,7 @@ export default function App() {
   }
 
   const earnedBadge = highestEarned(streak);
+  const upcomingMilestone = nextMilestone(streak);
   const isDay0 = streak === 0 && !todayAnswered;
   const day0Msg = DAY0_MESSAGES[
     Math.abs((firstSeen || today).split("-").reduce((a, b) => a + parseInt(b, 10), 0)) % DAY0_MESSAGES.length
@@ -640,6 +652,18 @@ export default function App() {
                 }}>
                   <span style={{ fontSize: "14px" }}>{earnedBadge.emoji}</span>
                   <span>{earnedBadge.label}</span>
+                </div>
+              )}
+              {upcomingMilestone && (
+                <div style={{
+                  marginTop: "12px",
+                  fontSize: "10px",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: theme.textMuted,
+                  fontWeight: 600,
+                }}>
+                  {upcomingMilestone.days - streak} day{upcomingMilestone.days - streak !== 1 ? "s" : ""} until {upcomingMilestone.label}
                 </div>
               )}
             </>
