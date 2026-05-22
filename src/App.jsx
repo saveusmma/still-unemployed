@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 // ─── Copy ──────────────────────────────────────────────────────────────────
 const ACHIEVEMENTS = [
@@ -1040,6 +1041,7 @@ export default function App() {
           to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
+      <Analytics />
     </div>
   );
 }
